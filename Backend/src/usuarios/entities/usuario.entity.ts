@@ -14,7 +14,7 @@ export class Usuario extends Document {
         unique : true,
         index : true
     })
-    rol : string;
+    role : string;
 
 }
 

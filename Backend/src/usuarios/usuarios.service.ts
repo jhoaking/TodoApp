@@ -25,8 +25,9 @@ export class UsuariosService {
     }
   }
 
-  findAll() {
-    return `This action returns all usuarios`;
+  async findAll(): Promise<Usuario[]> {
+    const user = await this.usuarioModel.find().lean();
+    return user;
   }
 
   async findOne(term: string) {
@@ -52,7 +53,7 @@ export class UsuariosService {
   }
 
   async update(term: string, updateUsuarioDto: UpdateUsuarioDto) {
-     const usuario = await this.findOne(term);
+    const usuario = await this.findOne(term);
 
     try {
       await usuario.updateOne(updateUsuarioDto);
@@ -64,7 +65,11 @@ export class UsuariosService {
     return;
   }
 
-  remove(id: string) {
-    return `This action removes a #${id} usuario`;
+  async remove(id: string) {
+    const { deletedCount } = await this.usuarioModel.deleteOne({ _id: id });
+    if (deletedCount === 0) {
+      throw new BadRequestException(`user with ID ${id} not found `);
+    }
+    return;
   }
 }

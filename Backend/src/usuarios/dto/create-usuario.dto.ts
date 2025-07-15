@@ -16,7 +16,7 @@ export class CreateUsuarioDto {
 
     @IsString()
     @MinLength(1)
-    rol : string
+    role : string
 
 
 }

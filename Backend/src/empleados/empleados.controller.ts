@@ -2,6 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { EmpleadosService } from './empleados.service';
 import { CreateEmpleadoDto } from './dto/create-empleado.dto';
 import { UpdateEmpleadoDto } from './dto/update-empleado.dto';
+import { ParseMongoIdPipe } from 'src/common/pipes/parse-mongo-id.pipe';
 
 @Controller('empleados')
 export class EmpleadosController {
@@ -17,18 +18,18 @@ export class EmpleadosController {
     return this.empleadosService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.empleadosService.findOne(+id);
+  @Get(':term')
+  findOne(@Param('term') term: string) {
+    return this.empleadosService.findOne(term);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateEmpleadoDto: UpdateEmpleadoDto) {
-    return this.empleadosService.update(+id, updateEmpleadoDto);
+  @Patch(':term')
+  update(@Param('term') term: string, @Body() updateEmpleadoDto: UpdateEmpleadoDto) {
+    return this.empleadosService.update(term, updateEmpleadoDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.empleadosService.remove(+id);
+  remove(@Param('id' , ParseMongoIdPipe) id: string) {
+    return this.empleadosService.remove(id);
   }
 }

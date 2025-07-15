@@ -1,7 +1,16 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { UsuariosService } from './usuarios.service';
 import { CreateUsuarioDto } from './dto/create-usuario.dto';
 import { UpdateUsuarioDto } from './dto/update-usuario.dto';
+import { ParseMongoIdPipe } from 'src/common/pipes/parse-mongo-id.pipe';
 
 @Controller('usuarios')
 export class UsuariosController {
@@ -23,12 +32,15 @@ export class UsuariosController {
   }
 
   @Patch(':term')
-  update(@Param('term') term: string, @Body() updateUsuarioDto: UpdateUsuarioDto) {
+  update(
+    @Param('term') term: string,
+    @Body() updateUsuarioDto: UpdateUsuarioDto,
+  ) {
     return this.usuariosService.update(term, updateUsuarioDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  remove(@Param('id', ParseMongoIdPipe) id: string) {
     return this.usuariosService.remove(id);
   }
 }
